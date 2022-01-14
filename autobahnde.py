@@ -11,19 +11,27 @@ url = 'https://verkehr.autobahn.de/o/autobahn/{}/services/closure'
 def getAutobahn(nr):
     data = requests.get(url.format(nr)).json()
     closures = data['closure']
-    #titles = []
+    titles = []
+    descriptions = []
     if data:
         for item in closures:
             title = item["title"]            
             description = item["description"][5]
-            #titles += title
-        return title, description
+            descriptions.append(description)
+            titles.append(title)
+        zipped_list = list(zip(titles, descriptions))
+        def writing(sth):
+            for i in range(len(sth)):
+                print(sth[i])
+                print("---------*********")
+        a = writing(zipped_list)
+    return (a)
 
 def main():
     autobahn_number = autobahnEntry.get()
     incident = getAutobahn(autobahn_number)
     if incident:
-        incidentLabel['text'] = f"Title: {incident[0]}, {incident[1]}"
+        incidentLabel['text'] = f" Olay {incident[0]}"
 
 autobahnEntry = Entry(autobahn, justify='center')
 autobahnEntry.pack(fill=BOTH,ipady=10, padx=18, pady=5)
